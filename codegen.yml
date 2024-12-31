@@ -1,0 +1,8 @@
+schema: './graphql/book-ql.schema.graphql'
+generates:
+  ./graphql/__generated__/book-ql.types.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      useIndexSignature: true

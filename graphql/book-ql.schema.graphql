@@ -1,0 +1,47 @@
+type Book {
+  id: ID
+  title: String
+  author: String
+  genre: String
+}
+type URL{
+  fileURL: String
+}
+
+type PrettyBook {
+  id: ID
+  status: String
+  message: String
+  file: URL
+}
+type UpdateRes{
+  book: Book
+  status: String
+  message: String
+}
+input BookUpdateInput {
+  id: ID!
+  title: String
+  author: String
+  genre: String
+}
+type AddRes{
+  status: String
+  message: String
+}
+input BookFilterInput {
+  title: String
+  author: String
+  genre: String
+}
+
+type Query {
+  book(id: ID!): Book
+  books: [Book]
+  pretty(id: ID!): PrettyBook
+}
+
+type Mutation {
+  addBook(input: BookFilterInput!): AddRes
+  updateBook(input: BookUpdateInput!): UpdateRes
+}
