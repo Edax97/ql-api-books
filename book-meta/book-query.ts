@@ -1,14 +1,18 @@
+// @ts-ignore
 import {api, APIError, ErrCode} from "encore.dev/api";
 import {SQLDatabase} from "encore.dev/storage/sqldb";
 import {AddRes, Book, BookFilterInput, BookUpdateInput, UpdateRes} from "../graphql/__generated__/book-ql.types";
 import resolveIterator from "../user-modules/resolve-iterator";
 
-
+interface Books{
+    books: Book[]
+}
 /** Query every ${Book} record from  pg ${book_meta} table */
-export const list = api<void, Book[]>(
+export const list = api<void, Books>(
     {path: '/', method: 'GET', expose: true}, async () => {
-        return await resolveIterator<Book>(bookMetaDB.query<Book>`SELECT *
+        const books = await resolveIterator<Book>(bookMetaDB.query<Book>`SELECT *
                                                                   FROM book_meta;`);
+        return {books};
     })
 
 /** Query id-${Book} record
@@ -28,7 +32,7 @@ export const get = api<getT, Book>
  * Resolve to inserted Book or apierror
  * */
 export const add = api<BookFilterInput, AddRes>
-({expose: true, method: 'POST', path: '/'},
+({expose: true, method: 'POST', path: '/add'},
     async (book) => {
         try {
             await bookMetaDB.exec`INSERT INTO book_meta (title, author, genre)
@@ -49,14 +53,22 @@ export const edit = api<BookUpdateInput, UpdateRes>(
     async (book) => {
         try {
             await bookMetaDB.exec`UPDATE book_meta 
-                              SET (title, author, genre) = (${book.title || ''}, ${book.author || ''}, ${book.genre || ''}) 
+                              SET (title,author,genre) = (${book.title || ''}, ${book.author || ''}, ${book.genre || ''}) 
                               WHERE id = ${+book.id}`;
+            //await bookMetaDB.
         } catch (e) {
             throw new APIError(ErrCode.Aborted, `Could not update book`);
         }
         return {status: 'ok', message: 'Successful edition', book};
     }
     );
+
+export const deleteObject = api<getT, void>(
+    {expose: true, method: 'DELETE', path: '/delete'},
+    async ({id}) =>{
+        await bookMetaDB.exec`DELETE from book_meta WHERE id=${+id}`;
+    } 
+)
 
 // Query pgSQL db with an orm library
 const bookMetaDB = new SQLDatabase('book-meta', {migrations: './migrations'});

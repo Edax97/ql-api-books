@@ -4,22 +4,16 @@ import {readFileSync} from "node:fs";
 import {json} from "node:stream/consumers";
 import {resolvers} from "./resolvers";
 
-export const bookGraphQl = api<any, any>(
-    {method: '*', expose: true, path: '/'},
-    async ()=>{
-        return null;
-    }
-)
-const typeDefs = readFileSync('../graphql/book-ql.schema.graphql', {encoding: 'utf8'});
+const typeDefs = readFileSync('./graphql/book-ql.schema.graphql', {encoding: 'utf8'});
 
 const server = new ApolloServer({
     typeDefs,
     resolvers
-})
+} )
 await server.start()
 
 export const rawBookQlAPI = api.raw(
-    {method: '*', expose: true, path: '/'},
+    {method: '*', expose: true, path: '/graphql'},
         async (req, res) => {
     server.assertStarted("/graphql");
 
