@@ -8,7 +8,8 @@ interface ContextFunArgs {
     req: IncomingMessage;
     res: ServerResponse
 }
-const baseContextFun: ContextFunction<[ContextFunArgs], any> = async () => ({})
+type CtxFn<T extends BaseContext> = ContextFunction<[ContextFunArgs], T>;
+const baseContextFun: CtxFn<BaseContext> = async () => ({})
 
 /**
  * Abstraction that handles encore api layer on top of the gql relational service
@@ -16,15 +17,19 @@ const baseContextFun: ContextFunction<[ContextFunArgs], any> = async () => ({})
  * @param aserver apollo instance
  * @param getContext user defines resolving ctx
  */
-export function graphQlHandler<Tcontext extends BaseContext>
-(aserver: ApolloServer<Tcontext>, getContext?: ContextFunction<[ContextFunArgs], Tcontext>): RawHandler {
+export function handlerToQLS
+    (aserver: ApolloServer<BaseContext>, getContext?: CtxFn<BaseContext>) : RawHandler
+export function handlerToQLS<Tctx extends BaseContext>
+    (aserver: ApolloServer<Tctx>, getContext: CtxFn<Tctx>) : RawHandler
+export function handlerToQLS<Tctx extends BaseContext>
+    (aserver: ApolloServer<Tctx>, getContext?: CtxFn<Tctx>): RawHandler {
     // not typed endpoint handler
     // errors fall to gql layer
     return async (req, res) => {
         // instance listening
         aserver.assertStarted('Apollo instance not active');
         // compute data relation from query
-        const context: ContextFunction<[ContextFunArgs], Tcontext> = getContext || baseContextFun;
+        const context = (getContext || baseContextFun) as CtxFn<Tctx>;
         const httpGraphQLRes = await aserver.executeHTTPGraphQLRequest({
             httpGraphQLRequest: {
                 headers: parseHeadToQLS(()=> req.headers),

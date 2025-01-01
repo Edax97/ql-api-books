@@ -2,7 +2,7 @@ import {ApolloServer} from "@apollo/server";
 import {api} from "encore.dev/api";
 import {readFileSync} from "node:fs";
 
-import {graphQlHandler} from "../as-encore/handlers/raw";
+import {handlerToQLS} from "../as-encore/handlers/raw";
 import {resolvers} from "./resolvers";
 
 const typeDefs = readFileSync('./graphql/book-ql.schema.graphql', {encoding: 'utf8'});
@@ -14,5 +14,5 @@ const server = new ApolloServer({
 await server.start()
 
 export const rawBookQlAPI = api.raw(
-    {method: '*', expose: true, path: '/graphql'}, graphQlHandler(server)
+    {method: '*', expose: true, path: '/graphql'}, handlerToQLS(server)
     )
