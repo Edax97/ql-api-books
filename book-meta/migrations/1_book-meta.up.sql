@@ -4,3 +4,4 @@ CREATE TABLE book_meta (
     author VARCHAR(255) NOT NULL,
     genre VARCHAR(255) NOT NULL
 )
+

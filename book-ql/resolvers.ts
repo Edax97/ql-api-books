@@ -6,7 +6,7 @@ const Query: QueryResolvers = {
         return await get({id : args.id});
     },
     books: async () => {
-        return await list();
+        return (await list()).books;
     }
 }
 const Mutation: MutationResolvers = {
