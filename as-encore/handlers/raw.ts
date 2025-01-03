@@ -12,7 +12,7 @@ type CtxFn<T extends BaseContext> = ContextFunction<[ContextFunArgs], T>;
 const baseContextFun: CtxFn<BaseContext> = async () => ({})
 
 /**
- * Abstraction that handles encore api layer on top of the gql relational service
+ * Raw handler that abstracts req parsing to graphQL server
  * @type <Tcontext> query wide context
  * @param aserver apollo instance
  * @param getContext user defines resolving ctx

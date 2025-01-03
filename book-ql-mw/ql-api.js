@@ -1,4 +1,4 @@
-
+"use strict";
 /**
 import {api} from "encore.dev/api";
 
@@ -9,4 +9,5 @@ export const qlApi = api<SqlArgs,SqlRes>(
         return req;
     }
 )
-*/
+*/ 
+//# sourceMappingURL=ql-api.js.map

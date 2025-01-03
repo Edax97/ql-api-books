@@ -1,4 +1,3 @@
-
 /**
 import {api} from "encore.dev/api";
 
@@ -9,4 +8,4 @@ export const qlApi = api<SqlArgs,SqlRes>(
         return req;
     }
 )
-*/
+*/ 
