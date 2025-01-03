@@ -1,0 +1,1 @@
+{"version":3,"file":"resolve-iterator.js","sourceRoot":"","sources":["resolve-iterator.ts"],"names":[],"mappings":"AACA;;;;GAIG;AACH,MAAM,CAAC,OAAO,CAAC,KAAK,UAAU,eAAe,CAAI,CAAoB;IACjE,MAAM,QAAQ,GAAQ,EAAE,CAAC;IACzB,IAAI,KAAK,EAAE,MAAM,IAAI,IAAI,CAAC,EAAE;QACxB,QAAQ,CAAC,IAAI,CAAC,IAAI,CAAC,CAAA;KACtB;IACD,OAAO,QAAQ,CAAC;AACpB,CAAC"}
